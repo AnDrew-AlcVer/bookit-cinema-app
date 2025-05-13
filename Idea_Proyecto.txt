@@ -1,0 +1,1 @@
+App de calendario de pelis donde te puedes apuntar a las sesiones y elegir la temática que mas te guste
