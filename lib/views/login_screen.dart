@@ -11,7 +11,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController correoController = TextEditingController();
   final TextEditingController contrasenyaController = TextEditingController();
 
-  // Para el registro
   final TextEditingController nombreRegistroController = TextEditingController();
   final TextEditingController correoRegistroController = TextEditingController();
   final TextEditingController contrasenyaRegistroController = TextEditingController();
@@ -32,12 +31,12 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: SafeArea( // <-- Añade SafeArea para evitar que el logo quede debajo del notch
+          child: SafeArea(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 80),
                   Align(
                     alignment: Alignment.topCenter,
                     child: Padding(
@@ -66,6 +65,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+                  Image.asset( 
+                    'assets/icons/logo.png',
+                    height: 100,
+                    fit: BoxFit.contain,
+                  ),
                   const SizedBox(height: 100),
                   Text(
                     "Inicia sesión",
@@ -75,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 30),
                   _buildTextField("Correo electrónico", Icons.email, controller: correoController),
                   const SizedBox(height: 20),
                   _buildTextField("Contraseña", Icons.lock, controller: contrasenyaController, obscure: true),
@@ -220,12 +224,11 @@ class _LoginScreenState extends State<LoginScreen> {
     await prefs.setString('usuario_correo', correo);
     await prefs.setString('usuario_contraseña', contrasenya);
 
-    // Limpiar campos de registro
     nombreRegistroController.clear();
     correoRegistroController.clear();
     contrasenyaRegistroController.clear();
 
-    Navigator.pop(context); // Cierra el modal
+    Navigator.pop(context);
     await Future.delayed(const Duration(milliseconds: 200));
 
     ScaffoldMessenger.of(_rootContext).showSnackBar(
@@ -243,14 +246,12 @@ class _LoginScreenState extends State<LoginScreen> {
     String? contrasenyaGuardada = prefs.getString('usuario_contraseña');
 
     if (correoIngresado == correoGuardado && contrasenyaIngresada == contrasenyaGuardada) {
-      // Limpiar campos de login
       correoController.clear();
       contrasenyaController.clear();
 
       ScaffoldMessenger.of(_rootContext).showSnackBar(
         SnackBar(content: Text("¡Bienvenido de nuevo!")),
       );
-      // Aquí podrías navegar a la pantalla principal
     } else {
       ScaffoldMessenger.of(_rootContext).showSnackBar(
         SnackBar(content: Text("Correo o contraseña incorrectos")),
