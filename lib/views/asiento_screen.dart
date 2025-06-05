@@ -132,7 +132,6 @@ class _AsientoScreenState extends State<AsientoScreen> {
                 onPressed: seleccionado == null
                     ? null
                     : () async {
-                        // Guardar la reserva en el usuario actual y en persistencia
                         if (Usuario.usuarioActual != null) {
                           Usuario.usuarioActual!.reservas.add(
                             PeliculaReservada(
@@ -142,7 +141,6 @@ class _AsientoScreenState extends State<AsientoScreen> {
                               asiento: seleccionado!,
                             ),
                           );
-                          // Guardar los usuarios en persistencia
                           List<Usuario> usuarios = await UsuariosData.cargarUsuarios();
                           int idx = usuarios.indexWhere((u) => u.correo == Usuario.usuarioActual!.correo);
                           if (idx != -1) {
@@ -150,7 +148,6 @@ class _AsientoScreenState extends State<AsientoScreen> {
                             await UsuariosData.guardarUsuarios(usuarios);
                           }
                         }
-                        // Volver a la pantalla principal y mostrar mensaje
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => MainScreen()),
                           (route) => false,

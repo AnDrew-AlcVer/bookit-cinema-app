@@ -17,7 +17,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
   @override
   void initState() {
     super.initState();
-    // Protege si usuarioActual es null
     if (Usuario.usuarioActual == null) {
       Future.microtask(() {
         Navigator.of(context).pushAndRemoveUntil(
@@ -36,7 +35,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
       if (campo == "correo") usuario.correo = valor;
       if (campo == "contrasenya") usuario.contrasenya = valor;
     });
-    // Obtén la lista de usuarios, actualízala y guárdala
     List<Usuario> usuarios = await UsuariosData.cargarUsuarios();
     int idx = usuarios.indexWhere((u) => u.correo == usuario.correo);
     if (idx != -1) {
@@ -122,7 +120,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Si usuarioActual es null, muestra un widget vacío mientras redirige
     if (Usuario.usuarioActual == null) {
       return const SizedBox.shrink();
     }

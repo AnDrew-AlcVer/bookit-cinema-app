@@ -14,7 +14,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 1; // 1 = cartelera por defecto
+  int _selectedIndex = 1;
 
   late Future<List<Pelicula>> _peliculasFuture;
 
@@ -76,7 +76,6 @@ class _CarteleraPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Altura de la barra de navegación + margen inferior
     final double navBarHeight = 64 + 15 + 16;
 
     return Column(
@@ -208,7 +207,6 @@ class _BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Lista de iconos y sus índices
     final items = [
       Icons.confirmation_num_rounded,
       Icons.local_movies_rounded,

@@ -131,13 +131,11 @@ class _LoginScreenState extends State<LoginScreen> {
               mini: true,
               backgroundColor: Colors.purpleAccent,
               onPressed: () async {
-                // Cuenta de prueba
                 String correoPrueba = "prueba@correo.com";
                 String contrasenyaPrueba = "123456";
 
                 List<Usuario> usuarios = await UsuariosData.cargarUsuarios();
 
-                // Si no existe la cuenta de prueba, la crea
                 Usuario? usuarioPrueba = usuarios.firstWhere(
                   (u) => u.correo == correoPrueba,
                   orElse: () => Usuario(
@@ -152,10 +150,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   await UsuariosData.guardarUsuarios(usuarios);
                 }
 
-                // Marca como usuario actual
                 Usuario.usuarioActual = usuarioPrueba;
 
-                // Navega a la pantalla principal
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => MainScreen()),
@@ -190,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 );
                 if (confirm == true) {
-                  await UsuariosData.guardarUsuarios([]); // Borra todos los usuarios
+                  await UsuariosData.guardarUsuarios([]);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Todos los usuarios han sido eliminados")),
                   );

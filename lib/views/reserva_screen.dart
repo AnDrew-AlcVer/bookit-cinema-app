@@ -24,7 +24,36 @@ class _ReservaScreenState extends State<ReservaScreen> {
     {"day": "Lun", "date": "25"},
   ];
 
-  final List<String> hours = ["16:00", "17:00", "18:00", "19:00", "20:00"];
+  late final List<String> hours;
+
+  @override
+  void initState() {
+    super.initState();
+    hours = _generarSesiones(widget.pelicula.duracion);
+  }
+
+  List<String> _generarSesiones(String duracion) {
+    // Extrae horas y minutos de la duración (ejemplo: "2h 6min")
+    final regex = RegExp(r'(\d+)h\s*(\d+)?');
+    final match = regex.firstMatch(duracion);
+    int minutos = 0;
+    if (match != null) {
+      minutos += int.parse(match.group(1)!) * 60;
+      if (match.group(2) != null) minutos += int.parse(match.group(2)!);
+    }
+    if (minutos == 0) minutos = 120; // Valor por defecto si no se puede parsear
+
+    // Genera sesiones desde las 16:00 hasta las 22:00, dejando hueco según duración
+    List<String> sesiones = [];
+    int hora = 15 * 60; // 16:00 en minutos
+    while (hora + minutos <= 23 * 60) {
+      final h = (hora ~/ 60).toString().padLeft(2, '0');
+      final m = (hora % 60).toString().padLeft(2, '0');
+      sesiones.add("$h:$m");
+      hora += minutos;
+    }
+    return sesiones;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +112,15 @@ class _ReservaScreenState extends State<ReservaScreen> {
               ),
               textAlign: TextAlign.center,
             ),
+            Text(
+              "Duración: ${widget.pelicula.duracion}",
+              style: GoogleFonts.poppins(
+                color: Colors.white54,
+                fontSize: 14,
+                fontStyle: FontStyle.italic,
+              ),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 18),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -108,6 +146,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
               },
               selectedDay: selectedDay,
               selectedHour: selectedHour,
+              hours: hours,
             ),
             const Spacer(),
             Padding(
@@ -161,11 +200,13 @@ class _SelectorFechaHora extends StatefulWidget {
   final Function(int?, int?) onChanged;
   final int? selectedDay;
   final int? selectedHour;
+  final List<String> hours;
 
   const _SelectorFechaHora({
     required this.onChanged,
     this.selectedDay,
     this.selectedHour,
+    required this.hours,
   });
 
   @override
@@ -183,8 +224,6 @@ class _SelectorFechaHoraState extends State<_SelectorFechaHora> {
     {"day": "Dom", "date": "24"},
     {"day": "Lun", "date": "25"},
   ];
-
-  final List<String> hours = ["16:00", "17:00", "18:00", "19:00", "20:00"];
 
   @override
   void initState() {
@@ -218,7 +257,7 @@ class _SelectorFechaHoraState extends State<_SelectorFechaHora> {
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(hours.length, (i) {
+          children: List.generate(widget.hours.length, (i) {
             return GestureDetector(
               onTap: () {
                 setState(() {
@@ -227,7 +266,7 @@ class _SelectorFechaHoraState extends State<_SelectorFechaHora> {
                 });
               },
               child: _TimeChip(
-                hours[i],
+                widget.hours[i],
                 selectedHour == i,
               ),
             );

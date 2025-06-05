@@ -53,7 +53,6 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                       setState(() {
                         Usuario.usuarioActual!.reservas.removeAt(index);
                       });
-                      // Navega a ReservaScreen para modificar
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -107,7 +106,6 @@ class _ReservaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Extrae fila y asiento para mostrarlo tipo ticket
     final asientoSplit = reserva.asiento.split('-');
     final fila = asientoSplit[0];
     final asientoNum = asientoSplit[1];
@@ -127,7 +125,6 @@ class _ReservaCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Imagen de la película
           ClipRRect(
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(24),
