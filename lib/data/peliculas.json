@@ -2,21 +2,25 @@
   {
     "titulo": "Doctor Strange",
     "subtitulo": "Marvel Studios",
-    "imagen": "https://pics.filmaffinity.com/Doctor_Strange_en_el_multiverso_de_la_locura-750542602-large.jpg"
+    "imagen": "https://pics.filmaffinity.com/Doctor_Strange_en_el_multiverso_de_la_locura-750542602-large.jpg",
+    "sinopsis": "El Dr. Stephen Strange debe enfrentarse a las consecuencias de abrir un portal al multiverso, enfrentando amenazas desconocidas junto a nuevos y viejos aliados."
   },
   {
     "titulo": "Spider-Man: No Way Home",
     "subtitulo": "Marvel Studios",
-    "imagen": "https://pics.filmaffinity.com/Spider_Man_No_Way_Home-642739124-large.jpg"
+    "imagen": "https://pics.filmaffinity.com/Spider_Man_No_Way_Home-642739124-large.jpg",
+    "sinopsis": "Peter Parker recurre al Doctor Strange para restaurar su identidad secreta, pero un error en el hechizo desata el caos y villanos de otros universos llegan a su mundo."
   },
   {
     "titulo": "The Batman",
     "subtitulo": "DC Comics",
-    "imagen": "https://pics.filmaffinity.com/The_Batman-449856406-large.jpg"
+    "imagen": "https://pics.filmaffinity.com/The_Batman-449856406-large.jpg",
+    "sinopsis": "En sus primeros años como vigilante, Bruce Wayne investiga una serie de crímenes en Gotham y se enfrenta al Enigma, un asesino que pone a prueba su ingenio y moralidad."
   },
   {
     "titulo": "Lightyear",
     "subtitulo": "Pixar Animation",
-    "imagen": "https://pics.filmaffinity.com/Lightyear-615932206-large.jpg"
+    "imagen": "https://pics.filmaffinity.com/Lightyear-615932206-large.jpg",
+    "sinopsis": "Buzz Lightyear y su tripulación quedan varados en un planeta hostil y deberán trabajar juntos para encontrar el camino de regreso a casa enfrentando grandes desafíos."
   }
 ]

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:aalcver_tf_ipc/views/main_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aalcver_tf_ipc/data/usuarios_data.dart';
 import 'package:aalcver_tf_ipc/models/usuario.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -19,6 +20,18 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController contrasenyaRegistroController = TextEditingController();
 
   late BuildContext _rootContext;
+
+  double _logoScale = 0.7;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        _logoScale = 1.0;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +83,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      Image.asset(
-                        'assets/icons/logo.png',
-                        height: 100,
-                        fit: BoxFit.contain,
+                      AnimatedScale(
+                        scale: _logoScale,
+                        duration: const Duration(milliseconds: 700),
+                        curve: Curves.easeOutBack,
+                        child: Image.asset(
+                          'assets/icons/logo.png',
+                          height: 100,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       const SizedBox(height: 100),
                       Text(
@@ -106,21 +124,45 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          // Botón flotante de desarrollo para ir directo a la pantalla de inicio
           Positioned(
-            top: 16,
+            top: 32,
             right: 16,
             child: FloatingActionButton(
               mini: true,
               backgroundColor: Colors.purpleAccent,
-              child: const Icon(Icons.developer_mode, color: Colors.white),
-              onPressed: () {
+              onPressed: () async {
+                // Cuenta de prueba
+                String correoPrueba = "prueba@correo.com";
+                String contrasenyaPrueba = "123456";
+
+                List<Usuario> usuarios = await UsuariosData.cargarUsuarios();
+
+                // Si no existe la cuenta de prueba, la crea
+                Usuario? usuarioPrueba = usuarios.firstWhere(
+                  (u) => u.correo == correoPrueba,
+                  orElse: () => Usuario(
+                    nombre: "Prueba",
+                    correo: correoPrueba,
+                    contrasenya: contrasenyaPrueba,
+                  ),
+                );
+
+                if (!usuarios.any((u) => u.correo == correoPrueba)) {
+                  usuarios.add(usuarioPrueba);
+                  await UsuariosData.guardarUsuarios(usuarios);
+                }
+
+                // Marca como usuario actual
+                Usuario.usuarioActual = usuarioPrueba;
+
+                // Navega a la pantalla principal
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => MainScreen()),
                 );
               },
               tooltip: 'Ir directo a inicio',
+              child: const Icon(Icons.developer_mode, color: Colors.white),
             ),
           ),
         ],
@@ -242,10 +284,8 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    // Cargar usuarios existentes
     List<Usuario> usuarios = await UsuariosData.cargarUsuarios();
 
-    // Comprobar si el correo ya está registrado
     bool existe = usuarios.any((u) => u.correo == correo);
     if (existe) {
       ScaffoldMessenger.of(_rootContext).showSnackBar(
@@ -254,7 +294,6 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    // Añadir nuevo usuario y guardar
     usuarios.add(Usuario(nombre: nombre, correo: correo, contrasenya: contrasenya));
     await UsuariosData.guardarUsuarios(usuarios);
 
@@ -274,10 +313,8 @@ class _LoginScreenState extends State<LoginScreen> {
     String correoIngresado = correoController.text.trim();
     String contrasenyaIngresada = contrasenyaController.text;
 
-    // Cargar usuarios registrados
     List<Usuario> usuarios = await UsuariosData.cargarUsuarios();
 
-    // Buscar usuario válido
     final usuarioValido = usuarios.any((u) =>
       u.correo == correoIngresado && u.contrasenya == contrasenyaIngresada);
 

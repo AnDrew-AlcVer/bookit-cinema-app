@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../models/pelicula.dart';
 import '../data/peliculas_data.dart';
+import 'reserva_screen.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -112,7 +116,12 @@ class _MainScreenState extends State<MainScreen> {
                                         const SizedBox(height: 12),
                                         ElevatedButton(
                                           onPressed: () {
-                                            // Acción para reservar o ver detalles
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ReservaScreen(pelicula: peli),
+                                              ),
+                                            );
                                           },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: const Color(0xFFB721FF),
@@ -167,7 +176,7 @@ class _BottomNavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(Icons.confirmation_num_rounded, color: Colors.white54, size: 28), // Entrada a la izquierda
+          Icon(Icons.confirmation_num_rounded, color: Colors.white54, size: 28),
           Container(
             decoration: BoxDecoration(
               gradient: const LinearGradient(
@@ -176,9 +185,9 @@ class _BottomNavBar extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             padding: const EdgeInsets.all(8),
-            child: Icon(Icons.local_movies_rounded, color: Colors.white, size: 32), // Pestaña central activa
+            child: Icon(Icons.local_movies_rounded, color: Colors.white, size: 32),
           ),
-          Icon(Icons.person_rounded, color: Colors.white54, size: 28), // Usuario a la derecha
+          Icon(Icons.person_rounded, color: Colors.white54, size: 28),
         ],
       ),
     );
