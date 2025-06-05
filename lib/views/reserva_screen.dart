@@ -55,11 +55,14 @@ class _ReservaScreenState extends State<ReservaScreen> {
             ),
             ClipRRect(
               borderRadius: BorderRadius.circular(28),
-              child: Image.network(
-                widget.pelicula.imagen,
-                height: 220,
-                width: 160,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: 'peli-img-${widget.pelicula.titulo}',
+                child: Image.network(
+                  widget.pelicula.imagen,
+                  height: 220,
+                  width: 160,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(height: 24),

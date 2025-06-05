@@ -165,6 +165,41 @@ class _LoginScreenState extends State<LoginScreen> {
               child: const Icon(Icons.developer_mode, color: Colors.white),
             ),
           ),
+          Positioned(
+            top: 32,
+            left: 16,
+            child: FloatingActionButton(
+              mini: true,
+              backgroundColor: Colors.redAccent,
+              onPressed: () async {
+                final confirm = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Eliminar todos los usuarios"),
+                    content: const Text("¿Seguro que deseas borrar TODOS los usuarios guardados? Esta acción no se puede deshacer."),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: const Text("Cancelar"),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        child: const Text("Eliminar", style: TextStyle(color: Colors.red)),
+                      ),
+                    ],
+                  ),
+                );
+                if (confirm == true) {
+                  await UsuariosData.guardarUsuarios([]); // Borra todos los usuarios
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Todos los usuarios han sido eliminados")),
+                  );
+                }
+              },
+              tooltip: 'Eliminar todos los usuarios',
+              child: const Icon(Icons.delete_forever, color: Colors.white),
+            ),
+          ),
         ],
       ),
     );

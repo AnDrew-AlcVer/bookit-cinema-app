@@ -1,9 +1,9 @@
 import 'pelicula_reservada.dart';
 
 class Usuario {
-  final String nombre;
-  final String correo;
-  final String contrasenya;
+  String nombre;
+  String correo;
+  String contrasenya;
   List<PeliculaReservada> reservas;
 
   static Usuario? usuarioActual;

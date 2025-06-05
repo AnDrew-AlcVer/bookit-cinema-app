@@ -4,6 +4,7 @@ import '../models/pelicula.dart';
 import '../data/peliculas_data.dart';
 import 'reserva_screen.dart';
 import 'mis_reservas_screen.dart';
+import 'perfil_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -34,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
     final List<Widget> _pages = [
       MisReservasScreen(),
       _CarteleraPage(_peliculasFuture),
-      Center(child: Icon(Icons.person, color: Colors.white70, size: 64)),
+      PerfilScreen(),
     ];
 
     return Scaffold(
@@ -117,11 +118,14 @@ class _CarteleraPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(28),
                         child: Stack(
                           children: [
-                            Image.network(
-                              peli.imagen,
-                              height: 340,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
+                            Hero(
+                              tag: 'peli.img-${peli.titulo}',
+                              child: Image.network(
+                                peli.imagen,
+                                height: 340,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             Positioned(
                               left: 0,

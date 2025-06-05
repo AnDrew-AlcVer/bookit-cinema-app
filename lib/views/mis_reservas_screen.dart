@@ -15,6 +15,7 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
   @override
   Widget build(BuildContext context) {
     final reservas = Usuario.usuarioActual?.reservas ?? [];
+    final double navBarHeight = 64 + 15 + 16;
 
     return Scaffold(
       backgroundColor: const Color(0xFF21094E),
@@ -39,53 +40,56 @@ class _MisReservasScreenState extends State<MisReservasScreen> {
                 style: GoogleFonts.poppins(color: Colors.white70, fontSize: 18),
               ),
             )
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: reservas.length,
-              itemBuilder: (context, index) {
-                final reserva = reservas[index];
-                return _ReservaCard(
-                  reserva: reserva,
-                  onModificar: () async {
-                    setState(() {
-                      Usuario.usuarioActual!.reservas.removeAt(index);
-                    });
-                    // Navega a ReservaScreen para modificar
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ReservaScreen(pelicula: reserva.pelicula),
-                      ),
-                    );
-                    setState(() {});
-                  },
-                  onEliminar: () async {
-                    final confirm = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text("Eliminar reserva"),
-                        content: const Text("¿Seguro que deseas eliminar esta reserva?"),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: const Text("Cancelar"),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, true),
-                            child: const Text("Eliminar", style: TextStyle(color: Colors.red)),
-                          ),
-                        ],
-                      ),
-                    );
-                    if (confirm == true) {
+          : Padding(
+            padding: EdgeInsets.only(bottom: navBarHeight),
+            child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: reservas.length,
+                itemBuilder: (context, index) {
+                  final reserva = reservas[index];
+                  return _ReservaCard(
+                    reserva: reserva,
+                    onModificar: () async {
                       setState(() {
                         Usuario.usuarioActual!.reservas.removeAt(index);
                       });
-                    }
-                  },
-                );
-              },
-            ),
+                      // Navega a ReservaScreen para modificar
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReservaScreen(pelicula: reserva.pelicula),
+                        ),
+                      );
+                      setState(() {});
+                    },
+                    onEliminar: () async {
+                      final confirm = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Eliminar reserva"),
+                          content: const Text("¿Seguro que deseas eliminar esta reserva?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text("Cancelar"),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              child: const Text("Eliminar", style: TextStyle(color: Colors.red)),
+                            ),
+                          ],
+                        ),
+                      );
+                      if (confirm == true) {
+                        setState(() {
+                          Usuario.usuarioActual!.reservas.removeAt(index);
+                        });
+                      }
+                    },
+                  );
+                },
+              ),
+          ),
     );
   }
 }

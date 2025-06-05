@@ -31,4 +31,10 @@ class UsuariosData {
     final jsonData = usuarios.map((u) => u.toJson()).toList();
     await file.writeAsString(json.encode(jsonData));
   }
+
+  static Future<void> eliminarUsuario(Usuario usuario) async {
+    List<Usuario> usuarios = await cargarUsuarios();
+    usuarios.removeWhere((u) => u.correo == usuario.correo);
+    await guardarUsuarios(usuarios);
+  }
 }
