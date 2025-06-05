@@ -315,10 +315,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
     List<Usuario> usuarios = await UsuariosData.cargarUsuarios();
 
-    final usuarioValido = usuarios.any((u) =>
-      u.correo == correoIngresado && u.contrasenya == contrasenyaIngresada);
+    Usuario? usuario = usuarios
+        .where((u) => u.correo == correoIngresado && u.contrasenya == contrasenyaIngresada)
+        .cast<Usuario?>()
+        .firstWhere((u) => true, orElse: () => null);
 
-    if (usuarioValido) {
+    if (usuario != null) {
+      Usuario.usuarioActual = usuario;
+
       correoController.clear();
       contrasenyaController.clear();
 
