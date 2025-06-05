@@ -33,7 +33,6 @@ class _ReservaScreenState extends State<ReservaScreen> {
   }
 
   List<String> _generarSesiones(String duracion) {
-    // Extrae horas y minutos de la duración (ejemplo: "2h 6min")
     final regex = RegExp(r'(\d+)h\s*(\d+)?');
     final match = regex.firstMatch(duracion);
     int minutos = 0;
@@ -41,11 +40,10 @@ class _ReservaScreenState extends State<ReservaScreen> {
       minutos += int.parse(match.group(1)!) * 60;
       if (match.group(2) != null) minutos += int.parse(match.group(2)!);
     }
-    if (minutos == 0) minutos = 120; // Valor por defecto si no se puede parsear
+    if (minutos == 0) minutos = 120;
 
-    // Genera sesiones desde las 16:00 hasta las 22:00, dejando hueco según duración
     List<String> sesiones = [];
-    int hora = 15 * 60; // 16:00 en minutos
+    int hora = 15 * 60;
     while (hora + minutos <= 23 * 60) {
       final h = (hora ~/ 60).toString().padLeft(2, '0');
       final m = (hora % 60).toString().padLeft(2, '0');
