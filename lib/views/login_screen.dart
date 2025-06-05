@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:aalcver_tf_ipc/views/main_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aalcver_tf_ipc/data/usuarios_data.dart';
+import 'package:aalcver_tf_ipc/models/usuario.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -21,85 +24,106 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     _rootContext = context;
     return Scaffold(
-      body: SizedBox.expand(
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF21094E), Color(0xFF6020C2)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 80),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            "BookIt",
-                            style: GoogleFonts.bebasNeue(
-                              color: Colors.white,
-                              fontSize: 80,
-                              letterSpacing: 8,
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 16,
-                                  color: Colors.black.withOpacity(0.6),
-                                  offset: Offset(0, 6),
+      body: Stack(
+        children: [
+          SizedBox.expand(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF21094E), Color(0xFF6020C2)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 80),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                "BookIt",
+                                style: GoogleFonts.bebasNeue(
+                                  color: Colors.white,
+                                  fontSize: 80,
+                                  letterSpacing: 8,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 16,
+                                      color: Colors.black.withOpacity(0.6),
+                                      offset: Offset(0, 6),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                            textAlign: TextAlign.center,
                           ),
                         ),
                       ),
-                    ),
+                      Image.asset(
+                        'assets/icons/logo.png',
+                        height: 100,
+                        fit: BoxFit.contain,
+                      ),
+                      const SizedBox(height: 100),
+                      Text(
+                        "Inicia sesión",
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      _buildTextField("Correo electrónico", Icons.email, controller: correoController),
+                      const SizedBox(height: 20),
+                      _buildTextField("Contraseña", Icons.lock, controller: contrasenyaController, obscure: true),
+                      const SizedBox(height: 30),
+                      _buildGradientButton("Iniciar sesión", context, onPressed: _iniciarSesion),
+                      const SizedBox(height: 20),
+                      TextButton(
+                        onPressed: () {
+                          _mostrarDialogoRegistro(context);
+                        },
+                        child: Text(
+                          "¿No tienes cuenta? Regístrate",
+                          style: GoogleFonts.poppins(color: Colors.white70),
+                        ),
+                      ),
+                    ],
                   ),
-                  Image.asset( 
-                    'assets/icons/logo.png',
-                    height: 100,
-                    fit: BoxFit.contain,
-                  ),
-                  const SizedBox(height: 100),
-                  Text(
-                    "Inicia sesión",
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  _buildTextField("Correo electrónico", Icons.email, controller: correoController),
-                  const SizedBox(height: 20),
-                  _buildTextField("Contraseña", Icons.lock, controller: contrasenyaController, obscure: true),
-                  const SizedBox(height: 30),
-                  _buildGradientButton("Iniciar sesión", context, onPressed: _iniciarSesion),
-                  const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () {
-                      _mostrarDialogoRegistro(context);
-                    },
-                    child: Text(
-                      "¿No tienes cuenta? Regístrate",
-                      style: GoogleFonts.poppins(color: Colors.white70),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+          // Botón flotante de desarrollo para ir directo a la pantalla de inicio
+          Positioned(
+            top: 16,
+            right: 16,
+            child: FloatingActionButton(
+              mini: true,
+              backgroundColor: Colors.purpleAccent,
+              child: const Icon(Icons.developer_mode, color: Colors.white),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainScreen()),
+                );
+              },
+              tooltip: 'Ir directo a inicio',
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -207,8 +231,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _registrarse() async {
-    final prefs = await SharedPreferences.getInstance();
-
     String nombre = nombreRegistroController.text.trim();
     String correo = correoRegistroController.text.trim();
     String contrasenya = contrasenyaRegistroController.text;
@@ -220,9 +242,21 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    await prefs.setString('usuario_nombre', nombre);
-    await prefs.setString('usuario_correo', correo);
-    await prefs.setString('usuario_contraseña', contrasenya);
+    // Cargar usuarios existentes
+    List<Usuario> usuarios = await UsuariosData.cargarUsuarios();
+
+    // Comprobar si el correo ya está registrado
+    bool existe = usuarios.any((u) => u.correo == correo);
+    if (existe) {
+      ScaffoldMessenger.of(_rootContext).showSnackBar(
+        SnackBar(content: Text("El correo ya está registrado")),
+      );
+      return;
+    }
+
+    // Añadir nuevo usuario y guardar
+    usuarios.add(Usuario(nombre: nombre, correo: correo, contrasenya: contrasenya));
+    await UsuariosData.guardarUsuarios(usuarios);
 
     nombreRegistroController.clear();
     correoRegistroController.clear();
@@ -237,20 +271,23 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _iniciarSesion() async {
-    final prefs = await SharedPreferences.getInstance();
-
     String correoIngresado = correoController.text.trim();
     String contrasenyaIngresada = contrasenyaController.text;
 
-    String? correoGuardado = prefs.getString('usuario_correo');
-    String? contrasenyaGuardada = prefs.getString('usuario_contraseña');
+    // Cargar usuarios registrados
+    List<Usuario> usuarios = await UsuariosData.cargarUsuarios();
 
-    if (correoIngresado == correoGuardado && contrasenyaIngresada == contrasenyaGuardada) {
+    // Buscar usuario válido
+    final usuarioValido = usuarios.any((u) =>
+      u.correo == correoIngresado && u.contrasenya == contrasenyaIngresada);
+
+    if (usuarioValido) {
       correoController.clear();
       contrasenyaController.clear();
 
-      ScaffoldMessenger.of(_rootContext).showSnackBar(
-        SnackBar(content: Text("¡Bienvenido de nuevo!")),
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen()),
       );
     } else {
       ScaffoldMessenger.of(_rootContext).showSnackBar(

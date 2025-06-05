@@ -1,0 +1,22 @@
+[
+  {
+    "titulo": "Doctor Strange",
+    "subtitulo": "Marvel Studios",
+    "imagen": "https://pics.filmaffinity.com/Doctor_Strange_en_el_multiverso_de_la_locura-750542602-large.jpg"
+  },
+  {
+    "titulo": "Spider-Man: No Way Home",
+    "subtitulo": "Marvel Studios",
+    "imagen": "https://pics.filmaffinity.com/Spider_Man_No_Way_Home-642739124-large.jpg"
+  },
+  {
+    "titulo": "The Batman",
+    "subtitulo": "DC Comics",
+    "imagen": "https://pics.filmaffinity.com/The_Batman-449856406-large.jpg"
+  },
+  {
+    "titulo": "Lightyear",
+    "subtitulo": "Pixar Animation",
+    "imagen": "https://pics.filmaffinity.com/Lightyear-615932206-large.jpg"
+  }
+]
