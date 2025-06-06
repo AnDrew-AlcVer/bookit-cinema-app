@@ -32,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _pages = [
+    final List<Widget> pages = [
       MisReservasScreen(),
       _CarteleraPage(_peliculasFuture),
       PerfilScreen(),
@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             child: SafeArea(
-              child: _pages[_selectedIndex],
+              child: pages[_selectedIndex],
             ),
           ),
           Positioned(
@@ -135,7 +135,7 @@ class _CarteleraPage extends StatelessWidget {
                                   gradient: LinearGradient(
                                     colors: [
                                       Colors.transparent,
-                                      Colors.black.withOpacity(0.8)
+                                      Colors.black.withAlpha((0.8 * 255).toInt())
                                     ],
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
@@ -221,7 +221,7 @@ class _BottomNavBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withAlpha((0.15 * 255).toInt()),
             blurRadius: 16,
             offset: Offset(0, 8),
           ),

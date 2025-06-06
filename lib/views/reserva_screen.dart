@@ -125,7 +125,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
               child: Text(
                 widget.pelicula.sinopsis,
                 style: GoogleFonts.poppins(
-                  color: Colors.white.withOpacity(0.85),
+                  color: Colors.white.withAlpha((0.85 * 255).toInt()),
                   fontSize: 13,
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.w400,
